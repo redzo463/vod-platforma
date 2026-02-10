@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  imageUrl     String?
+  clerkId      String?  @unique
+  bio          String?
+  
+  isVerified   Boolean  @default(false)
+  role         String   @default("USER") // ADMIN, STAFF, USER
+  
+  // Monetization
+  diamonds     Int      @default(0)
+  balance      Float    @default(0.0)
+
+  // Relations
+  videos       Video[]
+  comments     Comment[]
+  likes        Like[]
+  stream       Stream?
+  
+  following    Follow[] @relation("Following")
+  followers    Follow[] @relation("Followers")
+  
+  subscriptions Subscription[] @relation("UserSubscriptions")
+  subscribers   Subscription[] @relation("StreamerSubscribers")
+
+  transactions  Transaction[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  videos  Video[]
+  streams Stream[]
+}
+
+model Stream {
+  id           String  @id @default(uuid())
+  name         String
+  thumbnailUrl String?
+
+  ingressId    String? @unique
+  serverUrl    String?
+  streamKey    String?
+
+  isLive              Boolean @default(false)
+  isChatEnabled       Boolean @default(true)
+  isChatDelayed       Boolean @default(false)
+  isChatFollowersOnly Boolean @default(false)
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([ingressId])
+}
+
+model Video {
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  muxPlaybackId String?
+  muxAssetId    String?
+  duration      Float?
+  thumbnailUrl  String?
+  views         Int      @default(0)
+  isVOD         Boolean  @default(false)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  comments Comment[]
+  likes    Like[]
+  clips    Clip[]
+}
+
+model Follow {
+  id          String @id @default(uuid())
+  followerId  String
+  followingId String
+
+  follower    User @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Subscription {
+  id         String @id @default(uuid())
+  userId     String
+  streamerId String
+  tier       Int    @default(1) // 1, 2, 3
+
+  user       User @relation("UserSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
+  streamer   User @relation("StreamerSubscribers", fields: [streamerId], references: [id], onDelete: Cascade)
+
+  isActive   Boolean @default(true)
+  expiresAt  DateTime?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, streamerId])
+  @@index([userId])
+  @@index([streamerId])
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount    Float
+  currency  String   @default("USD")
+  type      String   // DEPOSIT, WITHDRAWAL, DONATION, SUB_PURCHASE
+  status    String   @default("PENDING") // PENDING, COMPLETED, FAILED
+
+  createdAt DateTime @default(now())
+}
+
+model Clip {
+  id            String   @id @default(uuid())
+  title         String
+  muxPlaybackId String
+  duration      Float
+  
+  videoId       String
+  video         Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+}
+
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  videoId String
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  videoId String
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  
+  isDislike Boolean @default(false)
+
+  @@id([userId, videoId])
+}
