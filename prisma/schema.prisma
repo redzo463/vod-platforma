@@ -33,6 +33,13 @@ model User {
   subscriptions Subscription[] @relation("UserSubscriptions")
   subscribers   Subscription[] @relation("StreamerSubscribers")
 
+  // Moderation
+  moderating    Moderator[] @relation("ModeratorUser")
+  moderators    Moderator[] @relation("StreamerModerators")
+
+  blockedBy     Ban[]       @relation("UserBanned")
+  blocking      Ban[]       @relation("StreamerBans")
+
   transactions  Transaction[]
 
   createdAt    DateTime @default(now())
@@ -128,6 +135,40 @@ model Subscription {
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  @@unique([userId, streamerId])
+  @@index([userId])
+  @@index([streamerId])
+}
+
+model Moderator {
+  id          String @id @default(uuid())
+  userId      String
+  streamerId  String
+
+  user        User @relation("ModeratorUser", fields: [userId], references: [id], onDelete: Cascade)
+  streamer    User @relation("StreamerModerators", fields: [streamerId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, streamerId])
+  @@index([userId])
+  @@index([streamerId])
+}
+
+model Ban {
+  id          String @id @default(uuid())
+  userId      String
+  streamerId  String
+  
+  expiresAt   DateTime? // Null = permanent, Set = timeout
+
+  user        User @relation("UserBanned", fields: [userId], references: [id], onDelete: Cascade)
+  streamer    User @relation("StreamerBans", fields: [streamerId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@unique([userId, streamerId])
   @@index([userId])

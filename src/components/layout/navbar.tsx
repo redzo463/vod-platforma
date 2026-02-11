@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Menu, Search, Video } from "lucide-react"
 
@@ -16,7 +18,7 @@ export const Navbar = () => {
                 {/* Mobile Sidebar Trigger */}
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button variant="ghost" size="icon" className="md:hidden">
+                        <Button variant="ghost" size="icon" className="md:hidden" suppressHydrationWarning>
                             <Menu className="h-5 w-5" />
                         </Button>
                     </SheetTrigger>

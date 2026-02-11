@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, Eye, PlayCircle, DollarSign, TrendingUp, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -13,7 +14,9 @@ export default function StudioPage() {
                 </div>
                 <div className="flex gap-3">
                     <Button variant="outline" className="rounded-xl">Download Report</Button>
-                    <Button className="rounded-xl shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-primary/80">Go Live Now</Button>
+                    <Link href="/studio/stream">
+                        <Button className="rounded-xl shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-primary/80">Go Live Now</Button>
+                    </Link>
                 </div>
             </div>
 
