@@ -17,13 +17,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -32,7 +26,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Key,
   Copy,
   Eye,
   EyeOff,
@@ -47,8 +40,6 @@ import {
   Send,
   Radio,
   Settings,
-  Diamond,
-  Crown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -112,6 +103,28 @@ export default function StreamSettingsPage() {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const loadStreamData = async () => {
+      setIsLoading(true);
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const res = await getStream(user.id);
+        if (res.success && res.stream) {
+          setStreamData(res.stream as unknown as StreamData);
+          setServerUrl(res.stream.serverUrl || "rtmp://live.voxo.com/app");
+          setStreamKey(res.stream.streamKey || "");
+          setIsLive(res.stream.isLive);
+        }
+      } catch {
+        console.error("Failed to load stream data.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     if (user) {
       loadStreamData();
     }
@@ -212,27 +225,7 @@ export default function StreamSettingsPage() {
     }
   }, [isLive]);
 
-  const loadStreamData = async () => {
-    setIsLoading(true);
-    if (!user) {
-      setIsLoading(false); // Stop loading if no user
-      return;
-    }
 
-    try {
-      const res = await getStream(user.id);
-      if (res.success && res.stream) {
-        setStreamData(res.stream as any);
-        setServerUrl(res.stream.serverUrl || "rtmp://live.voxo.com/app");
-        setStreamKey(res.stream.streamKey || "");
-        setIsLive(res.stream.isLive);
-      }
-    } catch (error) {
-      console.error("Failed to load stream data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const onCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -248,7 +241,7 @@ export default function StreamSettingsPage() {
         setStreamKey(res.streamKey);
         toast.success("New stream key generated");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to generate key");
     } finally {
       setIsPending(false);
@@ -278,7 +271,7 @@ export default function StreamSettingsPage() {
           userData: { username: "System", subscribers: 0, diamonds: 0, isMod: true, isVip: false }
         },
       ]);
-    } catch (error) {
+    } catch {
       toast.error("Failed to start stream");
     } finally {
       setIsPending(false);
@@ -303,7 +296,7 @@ export default function StreamSettingsPage() {
           userData: { username: "System", subscribers: 0, diamonds: 0, isMod: true, isVip: false }
         },
       ]);
-    } catch (error) {
+    } catch {
       toast.error("Failed to stop stream");
     } finally {
       setIsPending(false);
@@ -817,7 +810,7 @@ export default function StreamSettingsPage() {
             <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
               <p className="text-xs text-yellow-600 dark:text-yellow-400 font-medium flex gap-2">
                 <span className="shrink-0">⚠️</span>
-                <span>After pasting these into OBS, click "Start Streaming" in OBS first, then click the button below.</span>
+                <span>After pasting these into OBS, click &quot;Start Streaming&quot; in OBS first, then click the button below.</span>
               </p>
             </div>
           </div>
@@ -833,7 +826,7 @@ export default function StreamSettingsPage() {
               onClick={onConfirmLive}
               className="bg-primary w-full sm:w-auto font-bold px-8 hover:bg-primary/90"
             >
-              I'm Live in OBS
+              I&apos;m Live in OBS
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { useRouter, useSearchParams } from "next/navigation"
 import { cn } from "@/lib/utils"
 // removed unused useState import if not needed, but keep if active use
-import { Suspense } from "react"
 // FilterBar uses useSearchParams so it SHOULD be wrapped in Suspense boundary if used inside a client component page, 
 // but here it is just a client component.
 // Actually, useRouter and useSearchParams are hooks.

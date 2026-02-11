@@ -10,7 +10,7 @@ import {
     TableRow
 } from "@/components/ui/table";
 import { format } from "date-fns";
-import { ShieldOff, Lock, UserCheck } from "lucide-react";
+import { ShieldOff, UserCheck } from "lucide-react";
 import { RemoveModButton, UnbanButton } from "./_components/actions";
 
 export default async function CommunityPage() {

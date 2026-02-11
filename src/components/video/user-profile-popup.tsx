@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Users, Trash2, Clock, ShieldCheck, Diamond, MoreVertical } from "lucide-react";
+import { Users, Trash2, Clock, ShieldCheck, Diamond } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import {
@@ -12,7 +11,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { addModerator, removeModerator, banUser, unbanUser } from "@/actions/moderation";
+import { addModerator, removeModerator, banUser } from "@/actions/moderation";
 
 export interface ChatUser {
     id?: string;

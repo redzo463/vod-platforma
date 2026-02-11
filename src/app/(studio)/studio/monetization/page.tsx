@@ -1,9 +1,8 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { DollarSign, Diamond, ArrowUpRight, Wallet, History, CreditCard, ChevronRight } from "lucide-react"
+import { Diamond, ArrowUpRight, Wallet, History, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 
 export default function MonetizationPage() {
     return (
@@ -89,7 +88,7 @@ export default function MonetizationPage() {
                 <Card className="bg-secondary/10 border-border/40">
                     <CardHeader>
                         <CardTitle className="text-xl font-bold">Subscription Settings</CardTitle>
-                        <CardDescription>Configure your channel's monthly subscription tiers.</CardDescription>
+                        <CardDescription>Configure your channel&apos;s monthly subscription tiers.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {[

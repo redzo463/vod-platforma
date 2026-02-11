@@ -1,11 +1,9 @@
 "use client"
 
-import { notFound } from "next/navigation"
 import { VideoPlayer } from "@/components/player/video-player"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Share2, MoreVertical, Layout, Heart, ShieldCheck, Users, Radio, ThumbsUp, ThumbsDown } from "lucide-react"
-import { LikeButton } from "@/components/video/like-button"
 import { CommentSection } from "@/components/video/comment-section"
 import { LiveChat } from "@/components/video/live-chat"
 import { formatDistanceToNow } from "date-fns"

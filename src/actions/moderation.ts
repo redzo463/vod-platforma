@@ -4,14 +4,7 @@ import { getSelf } from "@/lib/auth-service";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-/**
- * Ensures user is authorized (either owner or staff) to manage channel
- */
-const isAuthorized = async (user: any) => {
-    // Current logic: only self can moderate own channel, or staff
-    // Does not cover: mods moderating users (unless implemented later)
-    return true;
-};
+
 
 export const addModerator = async (targetUserId: string) => {
     try {
@@ -42,7 +35,7 @@ export const addModerator = async (targetUserId: string) => {
 
         revalidatePath(`/u/${self.username}`);
         return moderator;
-    } catch (error) {
+    } catch {
         throw new Error("Internal Error");
     }
 };
@@ -75,7 +68,7 @@ export const removeModerator = async (targetUserId: string) => {
 
         revalidatePath(`/u/${self.username}`);
         return moderator;
-    } catch (error) {
+    } catch {
         throw new Error("Internal Error");
     }
 };
@@ -147,7 +140,7 @@ export const banUser = async (targetUserId: string, durationInMinutes?: number, 
         });
 
         return ban;
-    } catch (error) {
+    } catch {
         throw new Error("Internal Error");
     }
 };
@@ -183,7 +176,7 @@ export const unbanUser = async (targetUserId: string, streamerId?: string) => {
         });
 
         return ban;
-    } catch (error) {
+    } catch {
         throw new Error("Internal Error");
     }
 };
@@ -248,7 +241,7 @@ export const sanctionStreamer = async (targetUserId: string) => {
 
         return { success: true };
 
-    } catch (error) {
+    } catch {
         throw new Error("Internal Error");
     }
 }

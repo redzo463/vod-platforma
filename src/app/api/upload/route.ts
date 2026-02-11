@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { video } from "@/lib/mux";
 
-export async function POST(req: Request) {
+export async function POST(_req: Request) {
     try {
         const { userId } = await auth();
 

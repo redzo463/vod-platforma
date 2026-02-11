@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -40,10 +41,11 @@ export const VideoCard = ({
                     <div className="absolute inset-0 ring-2 ring-red-600 z-10 rounded-xl pointer-events-none animate-pulse" />
                 )}
                 {thumbnailUrl ? (
-                    <img
+                    <Image
                         src={thumbnailUrl}
                         alt={title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                 ) : (
                     <div className="h-full w-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-muted-foreground">

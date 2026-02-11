@@ -38,14 +38,13 @@ export const CommentSection = ({ videoId, initialComments = [] }: CommentSection
             try {
                 const result = await addComment(videoId, inputStr);
                 if (result.success && result.comment) {
-                    // @ts-ignore - casting simulated response
-                    setComments((prev) => [result.comment, ...prev]);
+                    setComments((prev) => [result.comment as unknown as Comment, ...prev]);
                     setInputStr("");
                     toast.success("Comment added");
                 } else {
                     toast.error(result.error || "Failed to comment");
                 }
-            } catch (error) {
+            } catch {
                 toast.error("Something went wrong");
             }
         });

@@ -1,14 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SendHorizontal, MoreVertical, Users, Smile, Trash2, Clock, ShieldCheck, Diamond } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 import { UserProfilePopup, ChatUser } from "./user-profile-popup";
 import { v4 as uuidv4 } from "uuid";
 
@@ -83,7 +80,7 @@ export const LiveChat = ({ streamerId }: { streamerId?: string }) => {
         },
     ]);
     const [inputValue, setInputValue] = useState("");
-    const [isMod, setIsMod] = useState(true); // Simulated mod status
+    const isMod = true; // Simulated mod status
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -93,6 +90,20 @@ export const LiveChat = ({ streamerId }: { streamerId?: string }) => {
     }, [messages]);
 
     useEffect(() => {
+        const addMessage = (username: string, message: string, color?: string, badge?: ChatMessage["badge"]) => {
+            setMessages((prev) => [
+                ...prev.slice(-100),
+                {
+                    id: Math.random().toString(),
+                    username,
+                    message,
+                    color,
+                    badge,
+                    userData: generateRandomUserData(username, badge)
+                }
+            ]);
+        };
+
         const interval = setInterval(() => {
             const users = [
                 { name: "GamerPro", badge: "sub" as const },
@@ -111,19 +122,6 @@ export const LiveChat = ({ streamerId }: { streamerId?: string }) => {
         return () => clearInterval(interval);
     }, []);
 
-    const addMessage = (username: string, message: string, color?: string, badge?: ChatMessage["badge"]) => {
-        setMessages((prev) => [
-            ...prev.slice(-100),
-            {
-                id: Math.random().toString(),
-                username,
-                message,
-                color,
-                badge,
-                userData: generateRandomUserData(username, badge)
-            }
-        ]);
-    };
 
     const deleteMessage = (id: string) => {
         setMessages((prev) => prev.filter(m => m.id !== id));

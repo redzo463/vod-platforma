@@ -1,7 +1,5 @@
 "use client"
 
-import { cn } from "@/lib/utils"
-
 export const Logo = () => {
     return (
         <div className="flex items-center gap-x-2 group cursor-pointer select-none">

@@ -1,8 +1,9 @@
 'use client'
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Home, Compass, User, Film, PlaySquare, Clock } from "lucide-react"
+import { Home, Compass, Film, PlaySquare, Clock } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -81,10 +82,10 @@ export const Sidebar = () => {
                             >
                                 <div className="relative">
                                     <div className={cn(
-                                        "h-8 w-8 rounded-full border border-border group-hover:border-primary/50 transition-colors overflow-hidden",
+                                        "h-8 w-8 relative rounded-full border border-border group-hover:border-primary/50 transition-colors overflow-hidden",
                                         user.isLive && "ring-2 ring-red-500 ring-offset-2 ring-offset-background"
                                     )}>
-                                        <img src={user.imageUrl} alt={user.username} className="h-full w-full object-cover" />
+                                        <Image src={user.imageUrl} alt={user.username} fill className="object-cover" />
                                     </div>
                                     {user.isLive && (
                                         <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-background animate-pulse" />

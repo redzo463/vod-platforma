@@ -10,7 +10,7 @@ export default function StudioPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Creator Dashboard</h1>
-                    <p className="text-muted-foreground">Welcome back! Here's how your channel is performing.</p>
+                    <p className="text-muted-foreground">Welcome back! Here&apos;s how your channel is performing.</p>
                 </div>
                 <div className="flex gap-3">
                     <Button variant="outline" className="rounded-xl">Download Report</Button>
@@ -83,7 +83,7 @@ export default function StudioPage() {
                     <CardContent className="space-y-6">
                         <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
                             <h4 className="text-sm font-bold text-primary mb-1">Partner Program</h4>
-                            <p className="text-xs text-muted-foreground mb-4">You're 84% away from becoming a verified partner.</p>
+                            <p className="text-xs text-muted-foreground mb-4">You&apos;re 84% away from becoming a verified partner.</p>
                             <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
                                 <div className="h-full bg-primary w-[84%] shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
                             </div>

@@ -55,7 +55,7 @@ export const LikeButton = ({
                 setIsLiked(result.isLiked);
                 setIsDisliked(result.isDisliked);
                 // Sync likes count with server if needed or keep optimistic
-            } catch (error) {
+            } catch {
                 setIsLiked(wasLiked);
                 setIsDisliked(wasDisliked);
                 if (wasLiked) setLikes(l => l + 1); else setLikes(l => l - 1);
@@ -84,7 +84,7 @@ export const LikeButton = ({
                 const result = await onDislike(videoId);
                 setIsLiked(result.isLiked);
                 setIsDisliked(result.isDisliked);
-            } catch (error) {
+            } catch {
                 setIsDisliked(wasDisliked);
                 setIsLiked(wasLiked);
                 if (wasLiked) setLikes(l => l + 1);
